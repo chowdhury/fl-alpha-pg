@@ -3,7 +3,11 @@ TipObject = Parse.Object.extend("TipObject");
 
 var currentLocation;
 
+
 $(document).ready(function() {
+
+
+
 
 	//I handle doing GPS on addForm display
     if($("#addTipBtn").length === 1) {
@@ -14,7 +18,7 @@ $(document).ready(function() {
 			$("#addTipBtn").removeAttr("disabled");
 		}, function(err) {
 			//Since geolocation failed, we can't allow the user to submit
-			doAlert("Sorry, but we couldn't find your location.\nYou may not post a cow tip.");
+			doAlert("Sorry, but we couldn't find your location.\nYou may not post a tip.");
 		});
 
     }
@@ -23,17 +27,28 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		//get values
-		var numcows = $("#numcows").val();
-		var howdangerous = $("#howdangerous option:selected").val();
+		var fname = $("#fname").val();
+		var lname = $("#lname").val();
+		var restname = $("#name").val();
+		var lat = $("#lat").val();
+		var lng = $("#lng").val();
+		var location = $("#restlocation").val();
+		var restlocation = {longitude:lat, latitude:lng};
+		var rating = $("#rating option:selected").val();
 		var comments = $("#comments").val();
 
 		//TBD: Validation
-		var tip = new TipObject();
+		var tip = new TipObject()
+		;
 		var point = new Parse.GeoPoint({latitude: currentLocation.latitude, longitude: currentLocation.longitude});
 		tip.save(
 				{
-					numcows:numcows,
-					howdangerous:howdangerous,
+					fname:fname,
+					lname:lname,
+					restname:restname,
+					location:location,
+					restlocation:restlocation,
+					rating:rating,
 					comments:comments,
 					location:point
 				},{
@@ -47,6 +62,30 @@ $(document).ready(function() {
 				});
 
     });
+
+    var query = new Parse.Query(TipObject);
+query.find({
+	success: function(results) {
+		var s = '';
+		for(var i=0, len=results.length; i<len; i++) {
+			var result = results[i];
+			console.dir(result);
+			s+= '<p>';
+			s+= '<b>ID:</b> '+ result.id + '<br/>';
+			s+= 'Foody: ' + result.attributes.fname + '<br/>';
+			s+= 'Created: ' + result.createdAt + '<br/>';
+			s+= 'Restaurant Name: ' + result.attributes.restname + '<br/>';
+			s+= 'Restaurant Locations: ' + result.attributes.restlocation + '<br/>';
+			s+= 'Rating?: ' + result.attributes.rating + '<br/>';
+			s+= 'Comments: ' + result.attributes.comments;
+			s+= '</p>';
+		}
+		$("#tipdisplaylist").html(s);
+	},
+	error: function(error) {
+		alert("Error: " + error.code + " " + error.message);
+	}
+}); 
 
     if($("#tipdisplay").length === 1) {
 

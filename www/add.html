@@ -3,8 +3,11 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 <script src="js/parse-1.1.2.min.js"></script>
 <script src="js/main.js"></script>
+    <script src="js/jquery.geocomplete.js"></script>
+
    <link rel="stylesheet" type="text/css" media="screen" href="css/concise.css" />
     <script type="text/javascript" src="js/concise.min.js"></script>
 </head>
@@ -26,27 +29,77 @@
 
 		<form id="addtipForm">
 
-			<label for="numcows">How many cows?</label>
-			<input type="number" id="numcows" class="input-xlarge" placeholder="Enter your rating for this restaurant?!">
+			<label for="fname">Please enter your first name:</label>
+			<input type="text" id="fname" class="input-xlarge" placeholder="First Name">
 
-			<label for="howdangerous">How dangerous?</label>
-			<select id="howdangerous" class="input-xlarge">
-				<option value="1">Totally Safe</option>
-				<option value="2">Some Risk</option>
-				<option value="3">Farmer with Shotgun!</option>
+			<label for="lname">Please enter your last name:</label>
+			<input type="text" id="lname" class="input-xlarge" placeholder="Last Name">
+
+			<label for="restname">Where did you eat?</label>
+
+
+  <div class="map_canvas"></div>
+
+      <input id="geocomplete" type="text" placeholder="What restaurant did you visit?" value="" />
+
+
+        <input name="name" type="hidden" value="">
+
+        <input name="lat" type="hidden" value="">
+
+        <input name="lng" type="hidden" value="">
+
+        <input name="location" type="hidden" value="">
+
+        <input name="location_type" type="hidden" value="">
+
+        <input name="formatted_address" type="hidden" value="">
+
+        <input name="postal_code" type="hidden" value="">
+
+        <input name="locality" type="hidden" value="">
+
+        <input name="country" type="hidden" value="">
+
+        <input name="administrative_area_level_1" type="hidden" value="">
+
+        <input name="id" type="hidden" value="">
+
+        <input name="reference" type="hidden" value="">
+
+        <input name="url" type="hidden" value="">
+
+        <input name="website" type="hidden" value="">
+
+			<label for="rating">How did you like this place?</label>
+			<select id="rating" class="input-xlarge">
+				<option value="1">One of my best meals ever!</option>
+				<option value="2">Thumbs UP</option>
+				<option value="3">Meh. So So. Maybe. Neutral.</option>
+				<option value="4">Not horrible, I'll do it if I'm starving with nowhere to go.</option>
+				<option value="5">Thumbs DOWN</option>
 			</select>
 
 			<label for="comments">Anything else?</label>
 			<textarea id="comments" class="input-xlarge"></textarea>
 
-			<input type="submit" class="btn btn-block btn-primary" value="Send Tip" id="addTipBtn" disabled>
+			<input type="submit" class="btn btn-block btn-primary" value="Add FoodyTip" id="addTipBtn">
 
 		</form>
 
 	</div>
 
-	<script src="js/jquery-1.8.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
-	
+	<script>
+      $(function(){
+        $("#geocomplete").geocomplete({
+          map: ".map_canvas",
+          details: "form",
+          types: ["geocode", "establishment"],
+        });
+
+      });
+    </script>
+
 </body>
 </html>
