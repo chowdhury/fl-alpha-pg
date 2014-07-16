@@ -32,21 +32,24 @@ $(document).ready(function() {
 		var restname = $("#name").val();
 		var lat = $("#lat").val();
 		var lng = $("#lng").val();
-		var location = $("#restlocation").val();
-		var restlocation = {longitude:lat, latitude:lng};
+		var restlocation = $("#restlocation").val();
 		var rating = $("#rating option:selected").val();
 		var comments = $("#comments").val();
-
+		//var point = {longitude:$("#lng").val(), latitude:$("#lat").val()};
 		//TBD: Validation
 		var tip = new TipObject()
 		;
-		var point = new Parse.GeoPoint({latitude: currentLocation.latitude, longitude: currentLocation.longitude});
+		//var point = new Parse.GeoPoint({latitude: currentLocation.latitude, longitude: currentLocation.longitude});
+		var point = new Parse.GeoPoint({latitude: parseFloat(lat), longitude: parseFloat(lng)});
+
+		//var point = new Parse.GeoPoint($("#restlocation").val());
 		tip.save(
 				{
 					fname:fname,
 					lname:lname,
 					restname:restname,
-					location:location,
+					lat:lat,
+					lng:lng,
 					restlocation:restlocation,
 					rating:rating,
 					comments:comments,
@@ -129,7 +132,7 @@ function renderResults(results,myLoc) {
 		for(var i=0, len=results.length; i<len; i++) {
 			var result = results[i];
 			var marker = L.marker([result.attributes.location.latitude, result.attributes.location.longitude]).addTo(map);
-			var markerLabel = "Cows: "+result.attributes.numcows+"<br/>Danger: "+dangerLevels[result.attributes.howdangerous-1];
+			var markerLabel = "Foody: "+result.attributes.fname+"<br/>Rating: "+dangerLevels[result.attributes.rating-1];
 			if(result.attributes.comments && result.attributes.comments.length) markerLabel += "<br>"+result.attributes.comments;
 			marker.bindPopup(markerLabel);
 		}
