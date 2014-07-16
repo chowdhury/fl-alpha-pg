@@ -90,7 +90,7 @@ query.find({
     if($("#tipdisplay").length === 1) {
 
 		//Update status to let the user know we are doing important things. Really important.
-		$("#tipdisplay").html("Please stand by. Checking your location for nearby cow tips!");
+		$("#tipdisplay").html("Please stand by. Checking your location for nearby FoodyTips!");
 
 		navigator.geolocation.getCurrentPosition(function(pos) {
 			var myLocation = new Parse.GeoPoint({latitude: pos.coords.latitude, longitude: pos.coords.longitude});
